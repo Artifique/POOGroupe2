@@ -1,3 +1,22 @@
+class evenement {
+    
+    public id_event: number;
+    public id_lieu: number;
+    public id_org:number;
+    public titre: string;
+    public description: string;
+
+    constructor(id_event: number, id_lieu: number, id_org: number, titre: string, description: string) {
+
+
+        this.id_event =  id_event;
+        this.id_lieu =  id_lieu;
+        this.id_org =  id_org;
+        this.titre =  titre;
+        this.description =  description;
+    }
+};
+
 class gestionnaire {
     
 
@@ -13,19 +32,33 @@ class gestionnaire {
         this.mdp_gest = mdp_gest;
     }
 
-    static ajoutUser( id_gest: number, nom_gest: string, email_gest:string, mdp_gest: string) {
+    static ajoutorg( id_gest: number, nom_gest: string, email_gest:string, mdp_gest: string) {
         return new gestionnaire( id_gest, nom_gest, email_gest, mdp_gest)
     };
 
-    static modifUser( id_gest: number, nom_gest: string, email_gest:string, mdp_gest: string): void {
+
+    static modiforg( id_gest: number, nom_gest: string, email_gest:string, mdp_gest: string): void {
 
     };
 
-    static suppUser(id_gest: number): void {
+    static supporg(id_gest: number): void {
+
+    };
+
+    static addevent( id_event: number, id_lieu: number, id_org: number, titre: string, description: string) {
+        return new evenement(id_event, id_lieu, id_org, titre, description)
+    };
+
+    static modifevent( id_event: number, id_lieu: number, id_org: number, titre: string, description: string ): void {
+
+    };
+
+    static suppevent(id_event: number): void {
 
     };
 };
 
-const newuser = new gestionnaire(1, "moussa", "moussa@gmail.com", "#0I?ZDSK?(-'-(èèDè");
-
-console.log("ID de l'utilisateur:", newuser.id_gest);
+const neworg = gestionnaire.ajoutorg(2, "moussa", "moussa@gmail.com", "#0I?ZDSK?(-'-(èèDè");
+const new_event = gestionnaire.addevent( 1, 1, 1, "Festival", "hebfregr gf,ndgbrjkthvr eiudkjvhr: string");
+console.log("ID de l'utilisateur:", neworg);
+console.log("ID de l'evenement:", new_event)
