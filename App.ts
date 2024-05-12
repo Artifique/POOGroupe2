@@ -15,27 +15,75 @@ connection.connect((err: Error) => {
     console.error('Erreur de connexion à la base de données : ', err);
     return;
   }
-  console.log('Connecté à la base de données MySQL');
+  console.log('Connexion OK');
 });
+
+
+
+
+class Evenement {
+    constructor(public titre: string, public date: string) {}
+  }
+  
+  class Personnel {
+    constructor(public nom: string) {}
+  
+    creerEvenement(titre: string, date: string): Evenement {
+        const nouvelEvenement = { 
+            nom: titre, 
+            date: date, 
+          };
+
+            const sql = 'INSERT INTO evenements SET ?';
+          
+          // Exécution de la requête SQL
+          connection.query(sql, nouvelEvenement, (result: any) => {
+            console.log('Ajouter avec succes');
+          });
+          
+          // Fermer la connexion à la base de données après avoir terminé
+          connection.end();
+
+      return new Evenement(titre, date);
+    }
+  }
+  
+  // Exemple d'utilisation
+  const personne = new Personnel("Jean");
+  const nouvelEvenement = personne.creerEvenement("SHOW", "2024-06-22");
+  
+  console.log(nouvelEvenement);
+  
+
+
+
+
+
+
+
+
+
+
+
 
 // Données à ajouter
-const nouvelUtilisateur = { 
-  nom: 'Barry', 
-  email: 'mody@gmail.com', 
-};
+// const nouvelUtilisateur = { 
+//   nom: 'Barry', 
+//   email: 'mody@gmail.com', 
+// };
 
-// Requête SQL pour ajouter un utilisateur
-// const sql = 'INSERT INTO utilisateurs SET ?';
-const sql = 'SELECT * FROM utilisateur';
+// // Requête SQL pour ajouter un utilisateur
+// // const sql = 'INSERT INTO utilisateurs SET ?';
+// const sql = 'SELECT * FROM utilisateur';
 
-// Exécution de la requête SQL
-connection.query(sql, nouvelUtilisateur, (err: Error | null, result: any) => {
-  if (err) {
-    console.error('Erreur lors de l\'ajout de l\'utilisateur : ', err);
-    return;
-  }
-  console.log(result);
-});
+// // Exécution de la requête SQL
+// connection.query(sql, nouvelUtilisateur, (err: Error | null, result: any) => {
+//   if (err) {
+//     console.error('Erreur lors de l\'ajout de l\'utilisateur : ', err);
+//     return;
+//   }
+//   console.log(result);
+// });
 
-// Fermer la connexion à la base de données après avoir terminé
-connection.end();
+// // Fermer la connexion à la base de données après avoir terminé
+// connection.end();
