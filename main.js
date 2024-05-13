@@ -1,6 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Utilisateur_1 = require("./Utilisateur");
-var user2 = new Utilisateur_1.Utilisateur('Oudo Kanté', 'oudo@gmail');
+var user2 = new Utilisateur_1.Utilisateur('Oudo Kanté', 'oudo@gmail', 65665689, 'azerty');
 // user2.CreerCompte();
-user2.RechercherEvent('Concert de Gaspi');
+user2.Stock_userid('oudo@gmail');
+// user2.RechercherEvent('Concert de Gaspi');
+// let gest1 = new Gestionnaire('Maliba Production','maliba@gmail.com','maliba');
+// gest1.AjoutGestionnaire();
+// gest1.SupGestionnaire('maliba@gmail.com');
+// gest1.ModifierGestionnaire('Dlageleya','maliba@gmail.com','maliba');
+// gest1.AjoutOraganisateur('Bamada City','bamada@gmail.com','bamada');
