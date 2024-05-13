@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var Utilisateur_1 = require("./Utilisateur");
+var Gestionnaire_1 = require("./Gestionnaire");
+//let user2 = new Utilisateur('Oudo Kanté','oudo@gmail');
+// user2.CreerCompte();
+//user2.RechercherEvent('Concert de Gaspi');
+var gest1 = new Gestionnaire_1.Gestionnaire('Mohamed', 'momo@gmail', '1234');
+//gest1.AjoutGestionnaire();
+//gest1.SupGestionnaire('momo@gmail');
+//gest1.ModifierGestionnaire('Mohamed','alassane@gmail','0000');
+//gest1.AjoutOraganisateur('Mohamed','alassane@gmail','0000');
+var util1 = new Utilisateur_1.Utilisateur('Moussa', 'moussa@gmail', 66423544, 'gggg');
+//util1.CreerCompte();
+//gest1.SupUtlisateur('moussa@gmail');
+util1.ModifierUtilisateur('Moussa', 'lassana@gmail', 66989855, '4444');
