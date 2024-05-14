@@ -7,13 +7,35 @@ import{ Organisateur } from './Organisateur';
 import { Typeevent } from './Typeevent';
 import {Gestionnaire} from './Gestionnaire';
 
-let user2 = new Utilisateur('Oudo Kanté','oudo@gmail',65665689,'azerty');
-// user2.CreerCompte();
-user2.Stock_userid('oudo@gmail');
+// let user2 = new Utilisateur('Oudo Kanté','oudo@gmail');
+// // user2.CreerCompte();
 
 // user2.RechercherEvent('Concert de Gaspi');
-// let gest1 = new Gestionnaire('Maliba Production','maliba@gmail.com','maliba');
-// gest1.AjoutGestionnaire();
-// gest1.SupGestionnaire('maliba@gmail.com');
-// gest1.ModifierGestionnaire('Dlageleya','maliba@gmail.com','maliba');
-// gest1.AjoutOraganisateur('Bamada City','bamada@gmail.com','bamada');
+
+var Gest_1 = new Gestionnaire("MAIGA", "maiga@gmail.com","blablabla");
+// var Gest_2 = new Gestionnaire("Konaté", "adama@gmail.com","12345678");
+// Gest_2.AjoutGestionnaire();
+// Gest_2.SupGestionnaire("konate@gmail.com");
+// Gest_2.ModifierGestionnaire("Adama","konate@gmail.com","12345678");
+
+
+// const Org2:Organisateur=Gest_1.AjoutOrganisateur("chaka","chaka@gmail","12345678");
+
+// Gest_2.ModifierOrg("Mamoutou", "Moutou@gmail.com","12345678","bouba@gmail");
+// Gest_1.ModifierOrg("Fomba", "fomba@gmail.com", "12345678","mody@gmail.com");
+
+
+
+const Org_1 = new Organisateur("Guindo","guindo@gmail.com","12345678");
+
+// Gest_1.AjoutOrg(Org_1);
+// Org_1.AjouterEventGratuit("Festival sur le niger","Ségou",1000,"21-05-2024","hdcdbhffgerueyfre");
+// Org_1.AjouterEventPayant("IBA ONE","PALAIS",500,"10-06-2024",2000,"OrangeMoney","Bla bla bla");
+
+const Bouba = new Utilisateur("Bouba","bouba@gmail.com",76135276,"12345678");
+// Bouba.RechercherEvent();
+// Bouba.CreerCompte();
+Bouba.reservation("Concert");
+
+
+

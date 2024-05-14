@@ -21,6 +21,7 @@ connection.connect(function (err) {
 });
 // Fin de la connexion a la db 
 var Evenement_1 = require("./Evenement");
+var Evenement_2 = require("./Evenement");
 var Organisateur = /** @class */ (function () {
     function Organisateur(nom_org, email_org, mdp_org) {
         this.nom_org = nom_org;
@@ -28,9 +29,19 @@ var Organisateur = /** @class */ (function () {
         this.mdp_org = mdp_org;
     }
     //   Ajout d un evenement a la base de donnee en se servant de la classe Evenement
-    Organisateur.AjouterEvent = function (id_lieu, id_org, titre, description) {
-        var evenement = new Evenement_1.Evenement(id_lieu, id_org, titre, description);
-        connection.query('INSERT INTO evenement (id_lieu, id_org, titre, description) VALUES (?,?,?,?)', [id_lieu, id_org, titre, description], function (err, result) {
+    Organisateur.prototype.AjouterEventGratuit = function (titre, lieu, nbrplace, dateEvent, description) {
+        var evenement = new Evenement_1.Evenement(titre, lieu, nbrplace, dateEvent, description);
+        connection.query('INSERT INTO evenement (titre,lieu,nbrplace,dateEvent,description) VALUES (?,?,?,?,?)', [titre, lieu, nbrplace, dateEvent, description], function (err, result) {
+            if (err) {
+                console.error('Erreur lors de l\'ajout de l\'événement:', err);
+                return;
+            }
+            console.log('Événement ajouté avec succès');
+        });
+    };
+    Organisateur.prototype.AjouterEventPayant = function (titre, lieu, nbrplace, dateEvent, prix, methodepaiement, description) {
+        var evenement = new Evenement_2.EvenementPayant(titre, lieu, nbrplace, dateEvent, prix, methodepaiement, description);
+        connection.query('INSERT INTO evenement (titre,lieu,nbrplace,dateEvent,prix,methode_paie,description) VALUES (?,?,?,?,?,?,?)', [titre, lieu, nbrplace, dateEvent, prix, methodepaiement, description], function (err, result) {
             if (err) {
                 console.error('Erreur lors de l\'ajout de l\'événement:', err);
                 return;
@@ -39,7 +50,7 @@ var Organisateur = /** @class */ (function () {
         });
     };
     // Modification du contenu d un evenement deja dans la base de donnee
-    Organisateur.ModifierEvent = function (titre, description, id_evenement) {
+    Organisateur.prototype.ModifierEvent = function (titre, description, id_evenement) {
         connection.query('UPDATE evenement SET  titre =?, description =? WHERE id_evenement =?', [titre, description, id_evenement], function (err, result) {
             if (err) {
                 console.error('Erreur lors de la modification de l\'événement:', err);

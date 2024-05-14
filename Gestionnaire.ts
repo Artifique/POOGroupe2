@@ -66,8 +66,8 @@ export class Gestionnaire {
       console.log("Organisateur Supprimé !!");
     });
  }
-
- AjoutOraganisateur(nom_org: string, email_org: string, mdp_org:string): any {
+// Ajouter Oraganisateur
+ AjoutOrganisateur(nom_org: string, email_org: string, mdp_org:string): any {
 
   let org1=new Organisateur(nom_org,email_org,mdp_org);
   const sql = "INSERT INTO organisateur (nom_org, email_org, mdp_org) VALUES (?,?,?)";
@@ -78,10 +78,35 @@ export class Gestionnaire {
   return;}
 
   console.log("Oraganisateur Inseré !!");
-
+    // return org1
  });
+}
 
- 
+
+ AjoutOrg(Org:Organisateur): any {
+  const sql = "INSERT INTO organisateur (nom_org, email_org, mdp_org) VALUES (?,?,?)";
+ connection.query(sql, [Org.nom_org,Org.email_org,Org.mdp_org], (err, results)=> {
+  if (err){
+  console.log("Erreur lors de l insertion!!");
+  return;}
+  console.log("Oraganisateur Inseré !!");
+ });
+}
+// Modifier Organisateur
+ModifierOrg(nomOrg: string, emailOrg: string, mdpOrg:string, email: string): any {
+
+      
+  const sql = "UPDATE organisateur SET nom_org = '"+nomOrg+"', email_org = '"+emailOrg+"', mdp_org = '"+mdpOrg+"' WHERE email_org = '"+email+"'";
+
+connection.query(sql,  [nomOrg, emailOrg, mdpOrg, email], (err, results)=> {
+  if (err){
+  console.log("Erreur lors de l insertion!!");
+  return;}
+  const id=results.Id;
+  
+  console.log("Organisateur Modifier !!");
+
+});
 }
 
 
@@ -91,41 +116,41 @@ export class Gestionnaire {
 
 
 
+//  static AddGestion(id_g:number,id_e:number,date_gest:Date,action:string){
 
- static AddGestion(id_g:number,id_e:number,date_gest:Date,action:string){
-
-    const sql = "INSERT INTO gestion (id_gest,id_event,date_gest,action) VALUES ('?', '?', '?','?)";
-    connection.query(sql,  [id_g,id_e,date_gest,action], (err, results)=> {
-      if (err){
-      console.log("Erreur lors de l insertion!!");
-      return;}
-      console.log("Gestion inserée !!");
-    });
+//     const sql = "INSERT INTO gestion (id_gest,id_event,date_gest,action) VALUES ('?', '?', '?','?)";
+//     connection.query(sql,  [id_g,id_e,date_gest,action], (err, results)=> {
+//       if (err){
+//       console.log("Erreur lors de l insertion!!");
+//       return;}
+//       console.log("Gestion inserée !!");
+//     });
     
 
- } 
- public ModifierOrganisateur(nom_org:string,email:string,mdp:number){
-  const sql = "UPDATE organisateur SET nom = '"+this.nom_ges+"', email = '"+this.email_ges+"', mdp = '"+this.mdp_ges+"' WHERE nom = '"+this.nom_ges+"'";
-  connection.query(sql, function (err, result) {
-    if (err){
-    console.log("Erreur lors de la modification!!");
-    return;}
-    console.log("Organisateur Modifié !!");
-  });
-}
+//  } 
+//  public ModifierOrganisateur(nom_org:string,email:string,mdp:number){
+//   const sql = "UPDATE organisateur SET nom = '"+this.nom_ges+"', email = '"+this.email_ges+"', mdp = '"+this.mdp_ges+"' WHERE nom = '"+this.nom_ges+"'";
+//   connection.query(sql, function (err, result) {
+//     if (err){
+//     console.log("Erreur lors de la modification!!");
+//     return;}
+//     console.log("Organisateur Modifié !!");
+//   });
+// }
 
 
- public SupprimerOrganisateur(){
-    const sql = "DELETE FROM gestionnaire WHERE nom = '"+this.nom_ges+"'";
-    connection.query(sql, function (err, result) {
-      if (err){
-      console.log("Erreur lors de la suppression!!");
-      return;}
-      console.log("Organisateur Supprimé !!");
-    });
- } 
+//  public SupprimerOrganisateur(){
+//     const sql = "DELETE FROM gestionnaire WHERE nom = '"+this.nom_ges+"'";
+//     connection.query(sql, function (err, result) {
+//       if (err){
+//       console.log("Erreur lors de la suppression!!");
+//       return;}
+//       console.log("Organisateur Supprimé !!");
+//     });
+//  } 
 
   
-  }
+//   }
+}
   
  

@@ -28,18 +28,51 @@ console.log(typeof(connection));
 
 export class Evenement {
     
-    public id_lieu: number;
-    public id_org:number;
+    // public id_lieu: number;
+    // public id_org:number;
     public titre: string;
+    public lieu: string;
+    public nbrplace:number;
+    public dateEvent:string;
     public description: string;
+    
 
-    constructor(id_lieu: number, id_org: number, titre: string, description: string) {
+    constructor(titre: string,lieu: string,nbrplace:number,dateEvent:string, description: string) {
 
-
-        this.id_lieu =  id_lieu;
-        this.id_org =  id_org;
         this.titre =  titre;
+        this.lieu =  lieu;
+        this.nbrplace =  nbrplace;
+        this.dateEvent= dateEvent;
         this.description =  description;
     }
     
 };
+
+
+export class EvenementPayant extends Evenement{
+    public methodepaiement: string;
+    public prix: number;
+    
+
+    constructor(titre: string,lieu:string,nbrplace:number,dateEvent:string,prix: number,methodepaiement: string,description: string) {
+    super(titre,lieu,nbrplace,dateEvent,description);
+        
+        this.prix =  prix;
+        this.methodepaiement =  methodepaiement;
+    }
+    
+};
+
+// export class EvenementGratuit extends Evenement{
+//     // public methodepaiement: string;
+//     // public prix: number;
+    
+
+//     constructor(titre: string,lieu:string,nbrplace:number,description: string) {
+//       super(titre,lieu,nbrplace,description);
+        
+//         // this.prix =  prix;
+//         // this.methodepaiement =  methodepaiement;
+//     }
+    
+// };

@@ -58,7 +58,8 @@ var Gestionnaire = /** @class */ (function () {
             console.log("Organisateur Supprimé !!");
         });
     };
-    Gestionnaire.prototype.AjoutOraganisateur = function (nom_org, email_org, mdp_org) {
+    // Ajouter Oraganisateur
+    Gestionnaire.prototype.AjoutOrganisateur = function (nom_org, email_org, mdp_org) {
         var org1 = new Organisateur_1.Organisateur(nom_org, email_org, mdp_org);
         var sql = "INSERT INTO organisateur (nom_org, email_org, mdp_org) VALUES (?,?,?)";
         connection.query(sql, [nom_org, email_org, mdp_org], function (err, results) {
@@ -67,36 +68,29 @@ var Gestionnaire = /** @class */ (function () {
                 return;
             }
             console.log("Oraganisateur Inseré !!");
+            // return org1
         });
     };
-    Gestionnaire.AddGestion = function (id_g, id_e, date_gest, action) {
-        var sql = "INSERT INTO gestion (id_gest,id_event,date_gest,action) VALUES ('?', '?', '?','?)";
-        connection.query(sql, [id_g, id_e, date_gest, action], function (err, results) {
+    Gestionnaire.prototype.AjoutOrg = function (Org) {
+        var sql = "INSERT INTO organisateur (nom_org, email_org, mdp_org) VALUES (?,?,?)";
+        connection.query(sql, [Org.nom_org, Org.email_org, Org.mdp_org], function (err, results) {
             if (err) {
                 console.log("Erreur lors de l insertion!!");
                 return;
             }
-            console.log("Gestion inserée !!");
+            console.log("Oraganisateur Inseré !!");
         });
     };
-    Gestionnaire.prototype.ModifierOrganisateur = function (nom_org, email, mdp) {
-        var sql = "UPDATE organisateur SET nom = '" + this.nom_ges + "', email = '" + this.email_ges + "', mdp = '" + this.mdp_ges + "' WHERE nom = '" + this.nom_ges + "'";
-        connection.query(sql, function (err, result) {
+    // Modifier Organisateur
+    Gestionnaire.prototype.ModifierOrg = function (nomOrg, emailOrg, mdpOrg, email) {
+        var sql = "UPDATE organisateur SET nom_org = '" + nomOrg + "', email_org = '" + emailOrg + "', mdp_org = '" + mdpOrg + "' WHERE email_org = '" + email + "'";
+        connection.query(sql, [nomOrg, emailOrg, mdpOrg, email], function (err, results) {
             if (err) {
-                console.log("Erreur lors de la modification!!");
+                console.log("Erreur lors de l insertion!!");
                 return;
             }
-            console.log("Organisateur Modifié !!");
-        });
-    };
-    Gestionnaire.prototype.SupprimerOrganisateur = function () {
-        var sql = "DELETE FROM gestionnaire WHERE nom = '" + this.nom_ges + "'";
-        connection.query(sql, function (err, result) {
-            if (err) {
-                console.log("Erreur lors de la suppression!!");
-                return;
-            }
-            console.log("Organisateur Supprimé !!");
+            var id = results.Id;
+            console.log("Organisateur Modifier !!");
         });
     };
     return Gestionnaire;
