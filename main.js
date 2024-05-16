@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Utilisateur_1 = require("./Utilisateur");
+var Evenement_1 = require("./Evenement");
 var Organisateur_1 = require("./Organisateur");
 var Gestionnaire_1 = require("./Gestionnaire");
 // let user2 = new Utilisateur('Oudo Kanté','oudo@gmail');
@@ -15,10 +15,17 @@ var Gest_1 = new Gestionnaire_1.Gestionnaire("MAIGA", "maiga@gmail.com", "blabla
 // Gest_2.ModifierOrg("Mamoutou", "Moutou@gmail.com","12345678","bouba@gmail");
 // Gest_1.ModifierOrg("Fomba", "fomba@gmail.com", "12345678","mody@gmail.com");
 var Org_1 = new Organisateur_1.Organisateur("Guindo", "guindo@gmail.com", "12345678");
+// Org_1.AjoutLieu("CICB","Bamako",10,200);
+// Org_1.PosTicket("Bama Art","VIP",30,2000);
+// Org_1.AjouterEvent("BLABLA","gratuit","nananinanana");
 // Gest_1.AjoutOrg(Org_1);
 // Org_1.AjouterEventGratuit("Festival sur le niger","Ségou",1000,"21-05-2024","hdcdbhffgerueyfre");
 // Org_1.AjouterEventPayant("IBA ONE","PALAIS",500,"10-06-2024",2000,"OrangeMoney","Bla bla bla");
-var Bouba = new Utilisateur_1.Utilisateur("Bouba", "bouba@gmail.com", 76135276, "12345678");
+// const Bouba = new Utilisateur("Bouba","bouba@gmail.com",76135276,"12345678");
 // Bouba.RechercherEvent();
 // Bouba.CreerCompte();
-Bouba.reservation("Concert");
+// Bouba.reservation("Bama Art");
+var Concert = new Evenement_1.Evenement("Bama art", "bla bla bla");
+// Org_1.AjoutEvent(Concert,"payant");
+Concert.PossederTicket("VIP", 5, 2000);
+Concert.PossederTicket("Pelouse", 20, 2000);

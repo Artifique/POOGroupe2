@@ -1,21 +1,6 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EvenementPayant = exports.Evenement = void 0;
+exports.Evenement = void 0;
 var mysql = require("mysql");
 // Configuration de la connexion à la base de données MySQL
 var connection = mysql.createConnection({
@@ -36,29 +21,40 @@ connection.connect(function (err) {
 });
 // Fin de la connexion a la db 
 var Evenement = /** @class */ (function () {
-    function Evenement(titre, lieu, nbrplace, dateEvent, description) {
+    function Evenement(titre, description) {
+        // this.id_te = id_te;
+        // this.id_org = id_org;
         this.titre = titre;
-        this.lieu = lieu;
-        this.nbrplace = nbrplace;
-        this.dateEvent = dateEvent;
         this.description = description;
     }
+    Evenement.prototype.PossederTicket = function (nom_tic, nbr_ticket, prix) {
+        var query = '(SELECT id_event FROM evenement WHERE titre="' + this.titre + '"  LIMIT 1)';
+        var query1 = '(SELECT id_tic FROM type_ticket WHERE nom_tic="' + nom_tic + '"  LIMIT 1)';
+        var query2 = 'INSERT into posseder  VALUES (' + query + ',' + query1 + ',?,?)';
+        connection.query(query2, [nbr_ticket, prix], function (err) {
+            if (err) {
+                console.error('Erreur lors de la reservation de l\'id utilisateur :', err);
+                return;
+            }
+            else {
+                console.log('Tichet OK');
+                return;
+            }
+        });
+    };
     return Evenement;
 }());
 exports.Evenement = Evenement;
 ;
-var EvenementPayant = /** @class */ (function (_super) {
-    __extends(EvenementPayant, _super);
-    function EvenementPayant(titre, lieu, nbrplace, dateEvent, prix, methodepaiement, description) {
-        var _this = _super.call(this, titre, lieu, nbrplace, dateEvent, description) || this;
-        _this.prix = prix;
-        _this.methodepaiement = methodepaiement;
-        return _this;
-    }
-    return EvenementPayant;
-}(Evenement));
-exports.EvenementPayant = EvenementPayant;
-;
+// export class EvenementPayant extends Evenement{
+//     public methodepaiement: string;
+//     public prix: number;
+//     constructor(titre: string,lieu:string,nbrplace:number,dateEvent:string,prix: number,methodepaiement: string,description: string) {
+//     super(titre,lieu,nbrplace,dateEvent,description);
+//         this.prix =  prix;
+//         this.methodepaiement =  methodepaiement;
+//     }
+// };
 // export class EvenementGratuit extends Evenement{
 //     // public methodepaiement: string;
 //     // public prix: number;

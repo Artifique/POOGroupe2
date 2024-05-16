@@ -79,71 +79,60 @@ var Utilisateur = /** @class */ (function () {
         });
     };
     //  INSCRIPTION A UN EVENEMENT
-    //   public reservation(titre:string):any{
-    //     const query='SELECT id_event FROM evenement WHERE titre='+titre+'';
-    //     connection.query(query, (err, results) => {
-    //       var id_ev = results;
-    //     })
-    //     const query1='SELECT id_util FROM utilisateur WHERE email_util='+this.email_util+'';
-    //     connection.query(query1, (err, results) => {
-    //       var id_user = results;
-    //     })
-    //     const query2='INSERT into reservation (id_util,id_event,date_res) VALUES (id_ev ,?,?)';
-    //     connection.query(query2, [id_ev,id_user, new Date()], (err, results) => {
-    //      if (err) {
-    //          console.error('Erreur lors de la reservation de l\'id utilisateur :', err);
-    //          return;
-    //      }
-    //      if (results.length === 0) {
-    //          console.log('Reservation OK');
-    //          return;
-    //      }
-    //     //  const event_id=results;
-    //     //  console.log(event_id);
-    //  });
-    //  }
     Utilisateur.prototype.reservation = function (titre) {
-        var _this = this;
-        var id_ev;
-        var id_user;
-        // Requête pour obtenir l'ID de l'événement
-        var query = 'SELECT id_event FROM evenement WHERE titre = ?';
-        connection.query(query, [titre], function (err, results) {
+        var query = '(SELECT id_event FROM evenement WHERE titre="' + titre + '")';
+        var query1 = '(SELECT id_util FROM utilisateur WHERE email_util="' + this.email_util + '")';
+        var query2 = 'INSERT into reservation (id_util,id_event,date_res) VALUES (' + query1 + ',' + query + ',?)';
+        connection.query(query2, [new Date()], function (err) {
             if (err) {
-                console.error('Erreur lors de la récupération de l\'ID de l\'événement :', err);
+                console.error('Erreur lors de la reservation de l\'id utilisateur :', err);
                 return;
             }
-            if (results.length > 0) {
-                id_ev = results[0].id_event;
-                // Requête pour obtenir l'ID de l'utilisateur
-                var query1 = 'SELECT id_util FROM utilisateur WHERE email_util = ?';
-                connection.query(query1, [_this.email_util], function (err, results) {
-                    if (err) {
-                        console.error('Erreur lors de la récupération de l\'ID de l\'utilisateur :', err);
-                        return;
-                    }
-                    if (results.length > 0) {
-                        id_user = results[0].id_util;
-                        // Requête pour insérer la réservation
-                        var query2 = 'INSERT INTO reservation (id_util, id_event, date_res) VALUES (?, ?, ?)';
-                        connection.query(query2, [id_user, id_ev, new Date()], function (err, results) {
-                            if (err) {
-                                console.error('Erreur lors de la réservation :', err);
-                                return;
-                            }
-                            console.log('Réservation effectuée avec succès.');
-                        });
-                    }
-                    else {
-                        console.error('Utilisateur non trouvé.');
-                    }
-                });
-            }
             else {
-                console.error('Événement non trouvé.');
+                console.log('Reservation OK');
+                return;
             }
         });
     };
+    //   public reservation(titre: string): void {
+    //     let id_ev: number;
+    //     let id_user: number;
+    //     // Requête pour obtenir l'ID de l'événement
+    //     const query = 'SELECT id_event FROM evenement WHERE titre = ?';
+    //     connection.query(query, [titre], (err, results) => {
+    //         if (err) {
+    //             console.error('Erreur lors de la récupération de l\'ID de l\'événement :', err);
+    //             return;
+    //         }
+    //         if (results.length > 0) {
+    //             id_ev = results[0].id_event;
+    //             // Requête pour obtenir l'ID de l'utilisateur
+    //             const query1 = 'SELECT id_util FROM utilisateur WHERE email_util = ?';
+    //             connection.query(query1, [this.email_util], (err, results) => {
+    //                 if (err) {
+    //                     console.error('Erreur lors de la récupération de l\'ID de l\'utilisateur :', err);
+    //                     return;
+    //                 }
+    //                 if (results.length > 0) {
+    //                     id_user = results[0].id_util;
+    //                     // Requête pour insérer la réservation
+    //                     const query2 = 'INSERT INTO reservation (id_util, id_event, date_res) VALUES (?, ?, ?)';
+    //                     connection.query(query2, [id_user, id_ev, new Date()], (err, results) => {
+    //                         if (err) {
+    //                             console.error('Erreur lors de la réservation :', err);
+    //                             return;
+    //                         }
+    //                         console.log('Réservation effectuée avec succès.');
+    //                     });
+    //                 } else {
+    //                     console.error('Utilisateur non trouvé.');
+    //                 }
+    //             });
+    //         } else {
+    //             console.error('Événement non trouvé.');
+    //         }
+    //     });
+    // }
     Utilisateur.prototype.RechercherEvent = function () {
         var query = 'SELECT titre FROM evenement';
         connection.query(query, function (err, results) {

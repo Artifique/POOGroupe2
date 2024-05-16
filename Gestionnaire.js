@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Gestionnaire = void 0;
 var mysql = require("mysql");
-var Organisateur_1 = require("./Organisateur");
 // Configuration de la connexion à la base de données MySQL
 var connection = mysql.createConnection({
     host: 'localhost',
@@ -59,18 +58,17 @@ var Gestionnaire = /** @class */ (function () {
         });
     };
     // Ajouter Oraganisateur
-    Gestionnaire.prototype.AjoutOrganisateur = function (nom_org, email_org, mdp_org) {
-        var org1 = new Organisateur_1.Organisateur(nom_org, email_org, mdp_org);
-        var sql = "INSERT INTO organisateur (nom_org, email_org, mdp_org) VALUES (?,?,?)";
-        connection.query(sql, [nom_org, email_org, mdp_org], function (err, results) {
-            if (err) {
-                console.log("Erreur lors de l insertion!!");
-                return;
-            }
-            console.log("Oraganisateur Inseré !!");
-            // return org1
-        });
-    };
+    //  AjoutOrganisateur(nom_org: string, email_org: string, mdp_org:string): any {
+    //   let org1=new Organisateur(nom_org,email_org,mdp_org);
+    //   const sql = "INSERT INTO organisateur (nom_org, email_org, mdp_org) VALUES (?,?,?)";
+    //  connection.query(sql, [nom_org,email_org,mdp_org], (err, results)=> {
+    //   if (err){
+    //   console.log("Erreur lors de l insertion!!");
+    //   return;}
+    //   console.log("Oraganisateur Inseré !!");
+    //     // return org1
+    //  });
+    // }
     Gestionnaire.prototype.AjoutOrg = function (Org) {
         var sql = "INSERT INTO organisateur (nom_org, email_org, mdp_org) VALUES (?,?,?)";
         connection.query(sql, [Org.nom_org, Org.email_org, Org.mdp_org], function (err, results) {

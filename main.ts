@@ -27,15 +27,24 @@ var Gest_1 = new Gestionnaire("MAIGA", "maiga@gmail.com","blablabla");
 
 
 const Org_1 = new Organisateur("Guindo","guindo@gmail.com","12345678");
-
+// Org_1.AjoutLieu("CICB","Bamako",10,200);
+// Org_1.PosTicket("Bama Art","VIP",30,2000);
+// Org_1.AjouterEvent("BLABLA","gratuit","nananinanana");
 // Gest_1.AjoutOrg(Org_1);
 // Org_1.AjouterEventGratuit("Festival sur le niger","Ségou",1000,"21-05-2024","hdcdbhffgerueyfre");
 // Org_1.AjouterEventPayant("IBA ONE","PALAIS",500,"10-06-2024",2000,"OrangeMoney","Bla bla bla");
 
-const Bouba = new Utilisateur("Bouba","bouba@gmail.com",76135276,"12345678");
+// const Bouba = new Utilisateur("Bouba","bouba@gmail.com",76135276,"12345678");
 // Bouba.RechercherEvent();
 // Bouba.CreerCompte();
-Bouba.reservation("Concert");
+// Bouba.reservation("Bama Art");
 
+
+
+
+let Concert = new Evenement("Bama art","bla bla bla");
+// Org_1.AjoutEvent(Concert,"payant");
+Concert.PossederTicket("VIP",5,2000);
+Concert.PossederTicket("Pelouse",20,2000);
 
 

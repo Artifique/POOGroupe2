@@ -5,8 +5,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'gestevent',
-  port:3310
+  database: 'gestevent'
 });
 console.log(typeof(connection));
 // Connexion à la base de données

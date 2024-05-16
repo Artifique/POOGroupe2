@@ -67,20 +67,20 @@ export class Gestionnaire {
     });
  }
 // Ajouter Oraganisateur
- AjoutOrganisateur(nom_org: string, email_org: string, mdp_org:string): any {
+//  AjoutOrganisateur(nom_org: string, email_org: string, mdp_org:string): any {
 
-  let org1=new Organisateur(nom_org,email_org,mdp_org);
-  const sql = "INSERT INTO organisateur (nom_org, email_org, mdp_org) VALUES (?,?,?)";
+//   let org1=new Organisateur(nom_org,email_org,mdp_org);
+//   const sql = "INSERT INTO organisateur (nom_org, email_org, mdp_org) VALUES (?,?,?)";
 
- connection.query(sql, [nom_org,email_org,mdp_org], (err, results)=> {
-  if (err){
-  console.log("Erreur lors de l insertion!!");
-  return;}
+//  connection.query(sql, [nom_org,email_org,mdp_org], (err, results)=> {
+//   if (err){
+//   console.log("Erreur lors de l insertion!!");
+//   return;}
 
-  console.log("Oraganisateur Inseré !!");
-    // return org1
- });
-}
+//   console.log("Oraganisateur Inseré !!");
+//     // return org1
+//  });
+// }
 
 
  AjoutOrg(Org:Organisateur): any {
@@ -92,6 +92,8 @@ export class Gestionnaire {
   console.log("Oraganisateur Inseré !!");
  });
 }
+
+
 // Modifier Organisateur
 ModifierOrg(nomOrg: string, emailOrg: string, mdpOrg:string, email: string): any {
 
