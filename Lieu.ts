@@ -5,7 +5,8 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'gestevent'
+  database: 'gestevent',
+  port:3310
 });
 console.log(typeof(connection));
 // Connexion à la base de données
@@ -40,46 +41,5 @@ export class Lieu {
         this.capacite = capacite;
     }
 
-    // Getter et Setter
-
-    // public getid_lieu(){
-    //     return this.id_lieu;
-    // }
-    
-    // public setid_lieu(id_lieu : number) {
-    //     this.id_lieu = id_lieu;
-    // }
-    // // ========================================================
-    // public getville(){
-    //     return this.id_lieu;
-    // }
-    
-    // public setville(ville : string) {
-    //     this.ville = ville;
-    // }
-    // // =============================================================
-    // public getNom(){
-    //     return this.id_lieu;
-    // }
-    
-    // public setNom(id_lieu : number) {
-    //     this.id_lieu = id_lieu;
-    // }
-    // // =============================================================
-    // public getNum_sall(){
-    //     return this.num_sall;
-    // }
-    
-    // public setNum_sall(num_sall : number) {
-    //     this.num_sall = num_sall;
-    // }
-    // // =============================================================
-    // public getCapacite(){
-    //     return this.capacite;
-    // }
-    
-    // public setCapacite(capacite : number) {
-    //     this.capacite = capacite;
-    // }
-    // =============================================================
+   
 }

@@ -7,7 +7,8 @@ var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'gestevent'
+    database: 'gestevent',
+    port: 3310
 });
 console.log(typeof (connection));
 // Connexion à la base de données

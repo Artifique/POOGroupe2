@@ -38,8 +38,6 @@ export class Utilisateur{
     // public get_id():number{
     //     return this.id_util;
     // }
-
-    // Ajout Utilisateur
     public CreerCompte(){
         // Requête d'insertion
         const query = 'INSERT INTO utilisateur (nom_util,email_util,num_util,mdp_util) VALUES (?,?,?,?)';
@@ -55,7 +53,7 @@ export class Utilisateur{
         });
 
     }
-//  User ID
+ 
     public Stock_userid(email:string):any{
         const query='SELECT id_util FROM utilisateur WHERE email_util=?';
         connection.query(query, [email], (err, results) => {
@@ -74,7 +72,6 @@ export class Utilisateur{
  
      }
 
-    //  Evenement ID
      public Stock_eventid(nom_event:string):any{
         const query='SELECT id_event FROM evenement WHERE titre=?';
         connection.query(query, [nom_event], (err, results) => {
@@ -94,94 +91,18 @@ export class Utilisateur{
      }
 
 
-    //  INSCRIPTION A UN EVENEMENT
-
-    public reservation(titre:string):any{
-
-      const query='(SELECT id_event FROM evenement WHERE titre="'+titre+'")';
-
-      const query1='(SELECT id_util FROM utilisateur WHERE email_util="'+this.email_util+'")';
-      const query2='INSERT into reservation (id_util,id_event,date_res) VALUES ('+query1+','+query+',?)';
-
-      connection.query(query2, [new Date()], (err) => {
-       if (err) {
-           console.error('Erreur lors de la reservation de l\'id utilisateur :', err);
-           return;
-       }else{
-        console.log('Reservation OK');
-           return;
-        }
-           
-   });
-
-   }
-
-
-
-
-
-//   public reservation(titre: string): void {
-//     let id_ev: number;
-//     let id_user: number;
-
-//     // Requête pour obtenir l'ID de l'événement
-//     const query = 'SELECT id_event FROM evenement WHERE titre = ?';
-//     connection.query(query, [titre], (err, results) => {
-//         if (err) {
-//             console.error('Erreur lors de la récupération de l\'ID de l\'événement :', err);
-//             return;
-//         }
-//         if (results.length > 0) {
-//             id_ev = results[0].id_event;
-
-//             // Requête pour obtenir l'ID de l'utilisateur
-//             const query1 = 'SELECT id_util FROM utilisateur WHERE email_util = ?';
-//             connection.query(query1, [this.email_util], (err, results) => {
-//                 if (err) {
-//                     console.error('Erreur lors de la récupération de l\'ID de l\'utilisateur :', err);
-//                     return;
-//                 }
-//                 if (results.length > 0) {
-//                     id_user = results[0].id_util;
-
-//                     // Requête pour insérer la réservation
-//                     const query2 = 'INSERT INTO reservation (id_util, id_event, date_res) VALUES (?, ?, ?)';
-//                     connection.query(query2, [id_user, id_ev, new Date()], (err, results) => {
-//                         if (err) {
-//                             console.error('Erreur lors de la réservation :', err);
-//                             return;
-//                         }
-//                         console.log('Réservation effectuée avec succès.');
-//                     });
-//                 } else {
-//                     console.error('Utilisateur non trouvé.');
-//                 }
-//             });
-//         } else {
-//             console.error('Événement non trouvé.');
-//         }
-//     });
-// }
-
-
-
-
-
-
-
-
-    public RechercherEvent():any{
-       const query='SELECT titre FROM evenement';
-       connection.query(query, (err, results) => {
+    public RechercherEvent(nom_event:string):any{
+       const query='SELECT * FROM evenement WHERE titre=?';
+       connection.query(query, [nom_event], (err, results) => {
         if (err) {
             console.error('Erreur lors de la recherche de l\'événement :', err);
             return;
         }
         if (results.length === 0) {
-            console.log('Aucun événement trouvé avec le nom',);
+            console.log('Aucun événement trouvé avec le nom', nom_event);
             return;
         }
-        console.log(results);
+        console.log('Événement trouvé :', results[0]);
        
     });
 
