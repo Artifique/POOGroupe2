@@ -19,7 +19,6 @@ connection.connect(function (err) {
     console.log('Connecté à la base de données MySQL');
     return;
 });
-// Fin de la connexion a la db 
 var Organisateur = /** @class */ (function () {
     function Organisateur(nom_org, email_org, mdp_org) {
         this.nom_org = nom_org;
@@ -27,30 +26,31 @@ var Organisateur = /** @class */ (function () {
         this.mdp_org = mdp_org;
     }
     //   Ajout d un evenement a la base de donnee en se servant de la classe Evenement
-    Organisateur.prototype.AjouterEvent = function (titre, nom_te, description, nom_lieu) {
-        this.AjouterTypeevent(nom_te);
-        var sql0 = 'SELECT id_lieu FROM lieu WHERE nom_lieu="' + nom_lieu + '"';
-        var sql1 = 'SELECT id_org FROM organisateur WHERE nom_org="' + this.nom_org + '"';
-        var sql2 = 'SELECT id_te FROM type_event WHERE nom_te="' + nom_te + '"';
-        var sql3 = 'INSERT INTO evenement VALUES (' + sql1 + ',' + sql2 + ',?,?)';
-        // let Typeevent = new Typeevent (id_lieu,id_orga,titre,description);
-        // let Typeticket = new Typeticket(id_ti,nom_ti);
-        connection.query(sql3, [titre, description], function (err, result) {
+    Organisateur.prototype.AjoutEvent = function (Event, type_event) {
+        var query = '(SELECT id_org FROM organisateur WHERE email_org="' + this.email_org + '" LIMIT 1)';
+        var query1 = '(SELECT id_te FROM type_event WHERE nom_te ="' + type_event + '" LIMIT 1)';
+        var sql = 'INSERT INTO evenement (id_te, id_org, titre,description) VALUES (' + query1 + ',' + query + ',?,?)';
+        connection.query(sql, [Event.titre, Event.description], function (err, results) {
+            console.log(err);
             if (err) {
-                console.error('Erreur lors de l\'ajout de l\'événement:', err);
+                console.log("Erreur lors de l insertion!!");
                 return;
             }
-            console.log('Événement ajouté avec succès');
+            console.log("Evenement Inseré !!");
         });
     };
-    Organisateur.prototype.AjouterTypeevent = function (nom_te) {
-        var sql = 'INSERT INTO type_event (nom_te) VALUES (' + nom_te + ')';
-        connection.query(sql, function (err, result) {
+    // Ajout de lieu
+    Organisateur.prototype.AjoutLieu = function (nom_lieu, ville_lieu, salle, capacite) {
+        var query2 = 'INSERT into lieu (nom_lieu,ville_lieu,salle,capacite) VALUES (?,?,?,?)';
+        connection.query(query2, [nom_lieu, ville_lieu, salle, capacite], function (err) {
             if (err) {
-                console.error('Erreur lors de l ajout du type d event:', err);
+                console.error('Erreur lors de l ajout du lieu:', err);
                 return;
             }
-            console.log('Type d evenement modifié ajouter avec succès');
+            else {
+                console.log('Lieu ajouter');
+                return;
+            }
         });
     };
     // Modification du contenu d un evenement deja dans la base de donnee
@@ -61,39 +61,6 @@ var Organisateur = /** @class */ (function () {
                 return;
             }
             console.log('Événement modifié avec succès');
-        });
-    };
-    Organisateur.prototype.StockId_org = function () {
-        // const l1=new Lieu(lieu_name,ville_name,salle_name,capacite);
-        var sql = "SELECT id_org FROM organisateur WHERE nom_org=?";
-        connection.query(sql, [this.nom_org], function (err, result) {
-            if (err) {
-                console.log("Erreur lors de la recherche!!");
-                return;
-            }
-            var id_org = result;
-            console.log(id_org);
-        });
-    };
-    Organisateur.prototype.StockId_lieu = function (nom_lieu) {
-        // const l1=new Lieu(lieu_name,ville_name,salle_name,capacite);
-        var sql = "SELECT id_lieu FROM lieu WHERE nom_lieu=?";
-        connection.query(sql, [nom_lieu], function (err, result) {
-            if (err) {
-                console.log("Erreur lors de la recherche!!");
-                return;
-            }
-            var id_lieu = result;
-            console.log(id_lieu);
-        });
-    };
-    Organisateur.prototype.A_Lieu = function (id_event, id_lieu, date) {
-        connection.query('INSERT INTO avoir_lieu (id_event,id_lieu,date) VALUES (?,?,?)', [id_event, id_lieu, date], function (err, result) {
-            if (err) {
-                console.error('Erreur lors de l\' insertion:', err);
-                return;
-            }
-            console.log('Insertion effectué avec succès ');
         });
     };
     return Organisateur;

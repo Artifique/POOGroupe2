@@ -1,6 +1,5 @@
 import * as mysql from 'mysql';
 import { Organisateur } from './Organisateur';
-import { Lieu } from './Lieu';
 // Configuration de la connexion à la base de données MySQL
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -39,9 +38,7 @@ export class Gestionnaire {
       if (err){
       console.log("Erreur lors de l insertion!!");
       return;}
-      // const id=results.Id;
-    
-      
+       
       console.log("Gestionnaire Inseré !!");
     }); 
  }
@@ -68,57 +65,51 @@ export class Gestionnaire {
     });
  }
 
- AjoutOraganisateur(nom_org: string, email_org: string, mdp_org:string): any {
 
-  let org1=new Organisateur(nom_org,email_org,mdp_org);
+ AjoutOrg(Org:Organisateur): any {
   const sql = "INSERT INTO organisateur (nom_org, email_org, mdp_org) VALUES (?,?,?)";
-
- connection.query(sql, [nom_org,email_org,mdp_org], (err, results)=> {
+ connection.query(sql, [Org.nom_org,Org.email_org,Org.mdp_org], (err, results)=> {
   if (err){
   console.log("Erreur lors de l insertion!!");
   return;}
-
   console.log("Oraganisateur Inseré !!");
-
  });
-
- 
 }
+// Table gestion
+ public Gestion(nom_event:string,date_gest:Date,action:string){
 
-
-
-
-
-
-
-
-
- public AddGestion(date_gest:Date,action:string){
-  
-
-    const sql = "INSERT INTO gestion (id_gest,id_event,date_gest,action) VALUES ('?', '?', '?','?)";
-    connection.query(sql,  [id_g,id_e,date_gest,action], (err, results)=> {
+    const query='(SELECT id_ges FROM gestionnaire WHERE email_ges="'+this.email_ges+'" LIMIT 1)';
+    const query1='(SELECT id_event FROM evenement WHERE titre ="'+nom_event+'" LIMIT 1)';
+    const sql = 'INSERT INTO gestion (id_gest,id_event,date_gest,action) VALUES ('+query1+', '+query+',?,?)';
+    connection.query(sql,[date_gest,action], (err, results)=> {
       if (err){
       console.log("Erreur lors de l insertion!!");
       return;}
       console.log("Gestion inserée !!");
     });
+}
     
 
- } 
- public ModifierOrganisateur(nom_org:string,email:string,mdp:number){
-  const sql = "UPDATE organisateur SET nom = '"+this.nom_ges+"', email = '"+this.email_ges+"', mdp = '"+this.mdp_ges+"' WHERE nom = '"+this.nom_ges+"'";
-  connection.query(sql, function (err, result) {
-    if (err){
-    console.log("Erreur lors de la modification!!");
-    return;}
-    console.log("Organisateur Modifié !!");
-  });
+// Modifier Organisateur
+ModifierOrg(nomOrg: string, emailOrg: string, mdpOrg:string, email: string): any {
+
+      
+  const sql = "UPDATE organisateur SET nom_org = '"+nomOrg+"', email_org = '"+emailOrg+"', mdp_org = '"+mdpOrg+"' WHERE email_org = '"+email+"'";
+
+connection.query(sql,  [nomOrg, emailOrg, mdpOrg, email], (err, results)=> {
+  if (err){
+  console.log("Erreur lors de l insertion!!");
+  return;}
+  const id=results.Id;
+  
+  console.log("Organisateur Modifier !!");
+
+});
 }
 
 
  public SupprimerOrganisateur(){
-    const sql = "DELETE FROM gestionnaire WHERE nom = '"+this.nom_ges+"'";
+    const sql = "DELETE FROM gestionnaire WHERE nom_ges = '"+this.nom_ges+"'";
     connection.query(sql, function (err, result) {
       if (err){
       console.log("Erreur lors de la suppression!!");
@@ -127,34 +118,28 @@ export class Gestionnaire {
     });
  } 
 
- public AjoutLieu(lieu_name:string,ville_name:string,salle_name:string,capacite:number){
-  const l1=new Lieu(lieu_name,ville_name,salle_name,capacite);
-  const sql = "INSERT INTO lieu (nom_lieu,ville_lieu,salle,capacite) VALUES (?,?,?,?)";
-  connection.query(sql, [lieu_name,ville_name,salle_name,capacite],function (err, result) {
+
+public ListeUserforEvent(event:string):void{
+
+  const sql = 'SELECT evenement.titre,utilisateur.nom_util,utilisateur.num_util FROM evenement,reservation,utilisateur WHERE reservation.id_event=evenement.id_event AND reservation.id_util=utilisateur.id_util AND evenement.titre=?';
+  connection.query(sql,[event],function (err, result) {
     if (err){
-    console.log("Erreur lors de l ajout!!");
+    console.log("Erreur lors de la recherche !!");
     return;}
-    console.log("Lieu ajouté!!");
+    console.log(result);
   });
-} 
+}
 
 
 
-// Test
 
-// public StockId_lieu(nom_lieu:string):any{
-//   // const l1=new Lieu(lieu_name,ville_name,salle_name,capacite);
-//   const sql = "SELECT id_lieu FROM lieu WHERE nom_lieu=?";
-//   connection.query(sql, [nom_lieu],function (err, result) {
-//     if (err){
-//     console.log("Erreur lors de la recherche!!");
-//     return;}
-//     const id_lieu=result.id_lieu;
-//     console.log(id_lieu);
-//   });
-// }
 
-  
+
+
+
+
+
   }
+
   
  

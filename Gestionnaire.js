@@ -2,8 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Gestionnaire = void 0;
 var mysql = require("mysql");
-var Organisateur_1 = require("./Organisateur");
-var Lieu_1 = require("./Lieu");
 // Configuration de la connexion à la base de données MySQL
 var connection = mysql.createConnection({
     host: 'localhost',
@@ -35,7 +33,6 @@ var Gestionnaire = /** @class */ (function () {
                 console.log("Erreur lors de l insertion!!");
                 return;
             }
-            // const id=results.Id;
             console.log("Gestionnaire Inseré !!");
         });
     };
@@ -59,10 +56,9 @@ var Gestionnaire = /** @class */ (function () {
             console.log("Organisateur Supprimé !!");
         });
     };
-    Gestionnaire.prototype.AjoutOraganisateur = function (nom_org, email_org, mdp_org) {
-        var org1 = new Organisateur_1.Organisateur(nom_org, email_org, mdp_org);
+    Gestionnaire.prototype.AjoutOrg = function (Org) {
         var sql = "INSERT INTO organisateur (nom_org, email_org, mdp_org) VALUES (?,?,?)";
-        connection.query(sql, [nom_org, email_org, mdp_org], function (err, results) {
+        connection.query(sql, [Org.nom_org, Org.email_org, Org.mdp_org], function (err, results) {
             if (err) {
                 console.log("Erreur lors de l insertion!!");
                 return;
@@ -70,9 +66,12 @@ var Gestionnaire = /** @class */ (function () {
             console.log("Oraganisateur Inseré !!");
         });
     };
-    Gestionnaire.AddGestion = function (id_g, id_e, date_gest, action) {
-        var sql = "INSERT INTO gestion (id_gest,id_event,date_gest,action) VALUES ('?', '?', '?','?)";
-        connection.query(sql, [id_g, id_e, date_gest, action], function (err, results) {
+    // Table gestion
+    Gestionnaire.prototype.Gestion = function (nom_event, date_gest, action) {
+        var query = '(SELECT id_ges FROM gestionnaire WHERE email_ges="' + this.email_ges + '" LIMIT 1)';
+        var query1 = '(SELECT id_event FROM evenement WHERE titre ="' + nom_event + '" LIMIT 1)';
+        var sql = 'INSERT INTO gestion (id_gest,id_event,date_gest,action) VALUES (' + query1 + ', ' + query + ',?,?)';
+        connection.query(sql, [date_gest, action], function (err, results) {
             if (err) {
                 console.log("Erreur lors de l insertion!!");
                 return;
@@ -80,18 +79,20 @@ var Gestionnaire = /** @class */ (function () {
             console.log("Gestion inserée !!");
         });
     };
-    Gestionnaire.prototype.ModifierOrganisateur = function (nom_org, email, mdp) {
-        var sql = "UPDATE organisateur SET nom = '" + this.nom_ges + "', email = '" + this.email_ges + "', mdp = '" + this.mdp_ges + "' WHERE nom = '" + this.nom_ges + "'";
-        connection.query(sql, function (err, result) {
+    // Modifier Organisateur
+    Gestionnaire.prototype.ModifierOrg = function (nomOrg, emailOrg, mdpOrg, email) {
+        var sql = "UPDATE organisateur SET nom_org = '" + nomOrg + "', email_org = '" + emailOrg + "', mdp_org = '" + mdpOrg + "' WHERE email_org = '" + email + "'";
+        connection.query(sql, [nomOrg, emailOrg, mdpOrg, email], function (err, results) {
             if (err) {
-                console.log("Erreur lors de la modification!!");
+                console.log("Erreur lors de l insertion!!");
                 return;
             }
-            console.log("Organisateur Modifié !!");
+            var id = results.Id;
+            console.log("Organisateur Modifier !!");
         });
     };
     Gestionnaire.prototype.SupprimerOrganisateur = function () {
-        var sql = "DELETE FROM gestionnaire WHERE nom = '" + this.nom_ges + "'";
+        var sql = "DELETE FROM gestionnaire WHERE nom_ges = '" + this.nom_ges + "'";
         connection.query(sql, function (err, result) {
             if (err) {
                 console.log("Erreur lors de la suppression!!");
@@ -100,15 +101,14 @@ var Gestionnaire = /** @class */ (function () {
             console.log("Organisateur Supprimé !!");
         });
     };
-    Gestionnaire.prototype.AjoutLieu = function (lieu_name, ville_name, salle_name, capacite) {
-        var l1 = new Lieu_1.Lieu(lieu_name, ville_name, salle_name, capacite);
-        var sql = "INSERT INTO lieu (nom_lieu,ville_lieu,salle,capacite) VALUES (?,?,?,?)";
-        connection.query(sql, [lieu_name, ville_name, salle_name, capacite], function (err, result) {
+    Gestionnaire.prototype.ListeUserforEvent = function (event) {
+        var sql = 'SELECT evenement.titre,utilisateur.nom_util,utilisateur.num_util FROM evenement,reservation,utilisateur WHERE reservation.id_event=evenement.id_event AND reservation.id_util=utilisateur.id_util AND evenement.titre=?';
+        connection.query(sql, [event], function (err, result) {
             if (err) {
-                console.log("Erreur lors de l ajout!!");
+                console.log("Erreur lors de la recherche !!");
                 return;
             }
-            console.log("Lieu ajouté!!");
+            console.log(result);
         });
     };
     return Gestionnaire;

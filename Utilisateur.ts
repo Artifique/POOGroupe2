@@ -23,21 +23,18 @@ console.log(typeof(connection));
 // Fin de la connexion a la db 
 
 export class Utilisateur{
-    // private id_util:number;
     public nom_util:string;
     public email_util:string;
     public num_util: number;
     public mdp_util: string;
     constructor(nom_u:string,email_u:string,num_u:number,mdp_u:string){
-            // this.id_util=id_u;
             this.nom_util=nom_u;
             this.email_util=email_u;
             this.num_util=num_u;
             this.mdp_util=mdp_u;
     }
-    // public get_id():number{
-    //     return this.id_util;
-    // }
+    
+ // Ajout Utilisateur
     public CreerCompte(){
         // Requête d'insertion
         const query = 'INSERT INTO utilisateur (nom_util,email_util,num_util,mdp_util) VALUES (?,?,?,?)';
@@ -49,60 +46,45 @@ export class Utilisateur{
                 return;
             }
             console.log('Utilisateur inséré avec succès !');
-            // console.log('ID de l\'utilisateur inséré :', results.insertId);
+            
         });
 
     }
- 
-    public Stock_userid(email:string):any{
-        const query='SELECT id_util FROM utilisateur WHERE email_util=?';
-        connection.query(query, [email], (err, results) => {
-         if (err) {
-             console.error('Erreur lors de la recherche de l\'id utilisateur :', err);
-             return;
-         }
-         if (results.length === 0) {
-             console.log('L utilisateur n existe pas');
-             return;
-         }
-         const user_id=results;
-         console.log(user_id);
-        
-     });
- 
-     }
+    
+    //  INSCRIPTION A UN EVENEMENT
 
-     public Stock_eventid(nom_event:string):any{
-        const query='SELECT id_event FROM evenement WHERE titre=?';
-        connection.query(query, [nom_event], (err, results) => {
-         if (err) {
-             console.error('Erreur lors de la recherche de l\'id utilisateur :', err);
-             return;
-         }
-         if (results.length === 0) {
-             console.log('L utilisateur n existe pas');
-             return;
-         }
-         const event_id=results;
-         console.log(event_id);
-        
-     });
- 
-     }
+    public reservation(titre:string,methode_paie:string):any{
 
+      const query='(SELECT id_event FROM evenement WHERE titre="'+titre+'")';
 
-    public RechercherEvent(nom_event:string):any{
-       const query='SELECT * FROM evenement WHERE titre=?';
-       connection.query(query, [nom_event], (err, results) => {
+      const query1='(SELECT id_util FROM utilisateur WHERE email_util="'+this.email_util+'")';
+      const query2='INSERT into reservation (id_util,id_event,date_res,methode_paie) VALUES ('+query1+','+query+',?,?)';
+
+      connection.query(query2, [new Date(),methode_paie], (err) => {
+       if (err) {
+           console.error('Erreur lors de la reservation de l\'id utilisateur :', err);
+           return;
+       }else{
+        console.log('Reservation OK');
+           return;
+        }
+           
+   });
+
+   }
+
+    public RechercherEvent():any{
+       const query='SELECT titre FROM evenement';
+       connection.query(query, (err, results) => {
         if (err) {
             console.error('Erreur lors de la recherche de l\'événement :', err);
             return;
         }
         if (results.length === 0) {
-            console.log('Aucun événement trouvé avec le nom', nom_event);
+            console.log('Aucun événement trouvé avec le nom',);
             return;
         }
-        console.log('Événement trouvé :', results[0]);
+        console.log(results);
        
     });
 
@@ -123,6 +105,21 @@ export class Utilisateur{
           console.log("Erreur lors de la suppression!!");
           return;}
           console.log("Utilisateur Supprimé !!");
+        }); 
+      }
+
+      public ListeEventforLieu(ville:string):void{
+
+        const sql = 'SELECT DISTINCT evenement.titre,evenement.description,lieu.nom_lieu,lieu.capacite FROM evenement,lieu,avoir_lieu WHERE avoir_lieu.id_event=evenement.id_event AND avoir_lieu.id_lieu=lieu.id_lieu AND lieu.ville_lieu=?';
+        connection.query(sql,[ville],function (err, result) {
+          if (err){
+          console.log("Erreur lors de la recherche !!");
+          return;}
+          console.log(result);
         });
       }
+
+
+
+
     }

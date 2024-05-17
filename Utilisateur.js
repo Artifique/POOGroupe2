@@ -23,15 +23,12 @@ connection.connect(function (err) {
 // Fin de la connexion a la db 
 var Utilisateur = /** @class */ (function () {
     function Utilisateur(nom_u, email_u, num_u, mdp_u) {
-        // this.id_util=id_u;
         this.nom_util = nom_u;
         this.email_util = email_u;
         this.num_util = num_u;
         this.mdp_util = mdp_u;
     }
-    // public get_id():number{
-    //     return this.id_util;
-    // }
+    // Ajout Utilisateur
     Utilisateur.prototype.CreerCompte = function () {
         // Requête d'insertion
         var query = 'INSERT INTO utilisateur (nom_util,email_util,num_util,mdp_util) VALUES (?,?,?,?)';
@@ -42,51 +39,36 @@ var Utilisateur = /** @class */ (function () {
                 return;
             }
             console.log('Utilisateur inséré avec succès !');
-            // console.log('ID de l\'utilisateur inséré :', results.insertId);
         });
     };
-    Utilisateur.prototype.Stock_userid = function (email) {
-        var query = 'SELECT id_util FROM utilisateur WHERE email_util=?';
-        connection.query(query, [email], function (err, results) {
+    //  INSCRIPTION A UN EVENEMENT
+    Utilisateur.prototype.reservation = function (titre, methode_paie) {
+        var query = '(SELECT id_event FROM evenement WHERE titre="' + titre + '")';
+        var query1 = '(SELECT id_util FROM utilisateur WHERE email_util="' + this.email_util + '")';
+        var query2 = 'INSERT into reservation (id_util,id_event,date_res,methode_paie) VALUES (' + query1 + ',' + query + ',?,?)';
+        connection.query(query2, [new Date(), methode_paie], function (err) {
             if (err) {
-                console.error('Erreur lors de la recherche de l\'id utilisateur :', err);
+                console.error('Erreur lors de la reservation de l\'id utilisateur :', err);
                 return;
             }
-            if (results.length === 0) {
-                console.log('L utilisateur n existe pas');
+            else {
+                console.log('Reservation OK');
                 return;
             }
-            var user_id = results;
-            console.log(user_id);
         });
     };
-    Utilisateur.prototype.Stock_eventid = function (nom_event) {
-        var query = 'SELECT id_event FROM evenement WHERE titre=?';
-        connection.query(query, [nom_event], function (err, results) {
-            if (err) {
-                console.error('Erreur lors de la recherche de l\'id utilisateur :', err);
-                return;
-            }
-            if (results.length === 0) {
-                console.log('L utilisateur n existe pas');
-                return;
-            }
-            var event_id = results;
-            console.log(event_id);
-        });
-    };
-    Utilisateur.prototype.RechercherEvent = function (nom_event) {
-        var query = 'SELECT * FROM evenement WHERE titre=?';
-        connection.query(query, [nom_event], function (err, results) {
+    Utilisateur.prototype.RechercherEvent = function () {
+        var query = 'SELECT titre FROM evenement';
+        connection.query(query, function (err, results) {
             if (err) {
                 console.error('Erreur lors de la recherche de l\'événement :', err);
                 return;
             }
             if (results.length === 0) {
-                console.log('Aucun événement trouvé avec le nom', nom_event);
+                console.log('Aucun événement trouvé avec le nom');
                 return;
             }
-            console.log('Événement trouvé :', results[0]);
+            console.log(results);
         });
     };
     Utilisateur.prototype.ModifierUtilisateur = function (nom_util, email_util, num_util, mdp_util) {
@@ -107,6 +89,16 @@ var Utilisateur = /** @class */ (function () {
                 return;
             }
             console.log("Utilisateur Supprimé !!");
+        });
+    };
+    Utilisateur.prototype.ListeEventforLieu = function (ville) {
+        var sql = 'SELECT DISTINCT evenement.titre,evenement.description,lieu.nom_lieu,lieu.capacite FROM evenement,lieu,avoir_lieu WHERE avoir_lieu.id_event=evenement.id_event AND avoir_lieu.id_lieu=lieu.id_lieu AND lieu.ville_lieu=?';
+        connection.query(sql, [ville], function (err, result) {
+            if (err) {
+                console.log("Erreur lors de la recherche !!");
+                return;
+            }
+            console.log(result);
         });
     };
     return Utilisateur;
