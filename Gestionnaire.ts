@@ -75,12 +75,32 @@ export class Gestionnaire {
   console.log("Oraganisateur Inseré !!");
  });
 }
+
+
+
+AjoutOraganisateur(nom_org: string, email_org: string, mdp_org:string): any {
+
+  let Org=new Organisateur(nom_org,email_org,mdp_org);
+  const sql = "INSERT INTO organisateur (nom_org, email_org, mdp_org) VALUES (?,?,?)";
+
+ connection.query(sql, [nom_org,email_org,mdp_org], (err, results)=> {
+  if (err){
+  console.log("Erreur lors de l insertion!!");
+  return;}
+
+  console.log("Oraganisateur Inseré !!");
+  
+
+ });
+}
+
+
 // Table gestion
  public Gestion(nom_event:string,date_gest:Date,action:string){
 
     const query='(SELECT id_ges FROM gestionnaire WHERE email_ges="'+this.email_ges+'" LIMIT 1)';
     const query1='(SELECT id_event FROM evenement WHERE titre ="'+nom_event+'" LIMIT 1)';
-    const sql = 'INSERT INTO gestion (id_gest,id_event,date_gest,action) VALUES ('+query1+', '+query+',?,?)';
+    const sql = 'INSERT INTOcls gestion (id_gest,id_event,date_gest,action) VALUES ('+query1+', '+query+',?,?)';
     connection.query(sql,[date_gest,action], (err, results)=> {
       if (err){
       console.log("Erreur lors de l insertion!!");

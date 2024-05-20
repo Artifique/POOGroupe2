@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Gestionnaire = void 0;
 var mysql = require("mysql");
+var Organisateur_1 = require("./Organisateur");
 // Configuration de la connexion à la base de données MySQL
 var connection = mysql.createConnection({
     host: 'localhost',
@@ -66,11 +67,22 @@ var Gestionnaire = /** @class */ (function () {
             console.log("Oraganisateur Inseré !!");
         });
     };
+    Gestionnaire.prototype.AjoutOraganisateur = function (nom_org, email_org, mdp_org) {
+        var Org = new Organisateur_1.Organisateur(nom_org, email_org, mdp_org);
+        var sql = "INSERT INTO organisateur (nom_org, email_org, mdp_org) VALUES (?,?,?)";
+        connection.query(sql, [nom_org, email_org, mdp_org], function (err, results) {
+            if (err) {
+                console.log("Erreur lors de l insertion!!");
+                return;
+            }
+            console.log("Oraganisateur Inseré !!");
+        });
+    };
     // Table gestion
     Gestionnaire.prototype.Gestion = function (nom_event, date_gest, action) {
         var query = '(SELECT id_ges FROM gestionnaire WHERE email_ges="' + this.email_ges + '" LIMIT 1)';
         var query1 = '(SELECT id_event FROM evenement WHERE titre ="' + nom_event + '" LIMIT 1)';
-        var sql = 'INSERT INTO gestion (id_gest,id_event,date_gest,action) VALUES (' + query1 + ', ' + query + ',?,?)';
+        var sql = 'INSERT INTOcls gestion (id_gest,id_event,date_gest,action) VALUES (' + query1 + ', ' + query + ',?,?)';
         connection.query(sql, [date_gest, action], function (err, results) {
             if (err) {
                 console.log("Erreur lors de l insertion!!");

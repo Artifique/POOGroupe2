@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Utilisateur = void 0;
 // import { connect } from './connect.ts';
+// import { promises } from 'dns';
 var mysql = require("mysql");
 // Configuration de la connexion à la base de données MySQL
 var connection = mysql.createConnection({
@@ -22,6 +23,7 @@ connection.connect(function (err) {
 });
 // Fin de la connexion a la db 
 var Utilisateur = /** @class */ (function () {
+    // public id : number;
     function Utilisateur(nom_u, email_u, num_u, mdp_u) {
         this.nom_util = nom_u;
         this.email_util = email_u;
@@ -41,12 +43,76 @@ var Utilisateur = /** @class */ (function () {
             console.log('Utilisateur inséré avec succès !');
         });
     };
+    Utilisateur.Authentification = function (email) {
+        // var ID :number = 0;
+        // Requête d'insertion
+        var query = '(SELECT id_util FROM utilisateur WHERE email_util="' + email + '")';
+        // Exécution de la requête d'insertion
+        var id = connection.query(query, function (err, results) {
+            if (err) {
+                console.error('Erreur lors de l\'insertion de l\'événement :', err);
+            }
+            else {
+                console.log("Connexion OK");
+                results[0].id_util;
+                // set _Id(ID);
+                // console.log(Id_UTIL);  
+                // resolve(ID);
+            }
+        });
+    };
+    // static Authentification(email:string):any {
+    //   // var ID :number = 0;
+    //     // Requête d'insertion
+    //     const query='(SELECT id_util FROM utilisateur WHERE email_util="'+email+'")';        
+    //     // Exécution de la requête d'insertion
+    //     return new Promise((resolve, reject) => {
+    //     var id = connection.query(query, (err, results):Promise<number> => {
+    //         if (err) {
+    //             console.error('Erreur lors de l\'insertion de l\'événement :', err);
+    //         }else{
+    //           console.log("Connexion OK");
+    //           var ID = results[0].id_util
+    //           // set _Id(ID);
+    //           // console.log(Id_UTIL);  
+    //           // resolve(ID);
+    //         }
+    //         resolve(ID);
+    //         return ID;
+    //     });
+    //     });
+    //     var Util = id;
+    //     return Util;
+    //   }
+    // static ID = 0;
+    // static Authentification(email: string): Promise<number> {
+    //     return new Promise((resolve, reject) => {
+    //         // Requête d'insertion
+    //         const query = '(SELECT id_util FROM utilisateur WHERE email_util="' + email + '")';
+    //         // Exécution de la requête d'insertion
+    //         connection.query(query, (err, results) => {
+    //             if (err) {
+    //                 console.error('Erreur lors de l\'insertion de l\'événement :', err);
+    //                 reject(err);
+    //                 return;
+    //             }
+    //             if (results.length > 0) {
+    //                 this.ID = results[0].id_util;
+    //                 console.log("Connexion OK");
+    //                 resolve(this.ID);
+    //             } else {
+    //                 console.log("Not exist");
+    //                 // resolve(null); // ou reject(new Error('Utilisateur non trouvé')) selon votre logique
+    //             }
+    //         });
+    //     });
+    // }
     //  INSCRIPTION A UN EVENEMENT
-    Utilisateur.prototype.reservation = function (titre, methode_paie) {
+    Utilisateur.reservation = function (titre, methode_paie, id) {
         var query = '(SELECT id_event FROM evenement WHERE titre="' + titre + '")';
-        var query1 = '(SELECT id_util FROM utilisateur WHERE email_util="' + this.email_util + '")';
-        var query2 = 'INSERT into reservation (id_util,id_event,date_res,methode_paie) VALUES (' + query1 + ',' + query + ',?,?)';
-        connection.query(query2, [new Date(), methode_paie], function (err) {
+        // const query1='(SELECT id_util FROM utilisateur WHERE email_util="'+this.email_util+'")';
+        var query2 = 'INSERT into reservation (id_util,id_event,date_res,methode_paie) VALUES (?,' + query + ',?,?)';
+        connection.query(query2, [id, new Date(), methode_paie], function (err) {
             if (err) {
                 console.error('Erreur lors de la reservation de l\'id utilisateur :', err);
                 return;
@@ -57,8 +123,8 @@ var Utilisateur = /** @class */ (function () {
             }
         });
     };
-    Utilisateur.prototype.RechercherEvent = function () {
-        var query = 'SELECT titre FROM evenement';
+    Utilisateur.RechercherEvent = function () {
+        var query = 'SELECT evenement.titre, evenement.description, avoir_lieu.date FROM evenement, avoir_lieu where evenement.id_event = evenement.id_event and avoir_lieu.id_event = evenement.id_event';
         connection.query(query, function (err, results) {
             if (err) {
                 console.error('Erreur lors de la recherche de l\'événement :', err);

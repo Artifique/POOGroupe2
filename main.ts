@@ -7,6 +7,7 @@ import{ Organisateur } from './Organisateur';
 import { Typeevent } from './Typeevent';
 import {Gestionnaire} from './Gestionnaire';
 
+
 // Test en suivant le worflow 
 // Ajout d'un nouveau personnel(gestionnaire)
 
@@ -20,10 +21,10 @@ let Org1=new Organisateur("BoubProd","prod@gmail.com","pro123ED");
 
 // Creation d'un evenement par ce personnel
 
-let Event1=new Evenement("Maxi Tours School","Divertissement,sport, competition de rap et slam");
-Org1.AjoutEvent(Event1,"Payant");
+// let Event1=new Evenement("Maxi Tours School","Divertissement,sport, competition de rap et slam");
+// Org1.AjoutEvent(Event1,"Payant");
 // Event1.PossederTicket("VIP",3,2500);
-// Event1.PossederTicket("Pelouse",2,1500);
+// Event1.PossederTicket("Pelouse",2,1500);                                                                                                                                                      
 // Event1.PossederTicket("Gradin",3,100);
 // const date1=new Date("2024-01-21");
 // Event1.A_Lieu("Place du cinquantenaire",date1);
@@ -32,7 +33,82 @@ Org1.AjoutEvent(Event1,"Payant");
 
 // let user1 = new Utilisateur('Aboudou','oudo@gmail',65465689,"azerty");
 // user1.ListeEventforLieu("Bamako");
+// var identifiant:number=0;
+var identifiant=Utilisateur.Authentification("bouba@gmail.com")
+console.log(identifiant);
+// Utilisateur.RechercherEvent()
+// console.log(Utilisateur.ID);
+// Utilisateur.reservation("Bama art","Orange Money",identifiant);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// async function someFunction() {
+//     try {
+//         const userID = await Utilisateur.Authentification('bouba@gmail.com');
+//         console.log('ID de l\'utilisateur :', userID);
+//     } catch (error) {
+//         console.error('Erreur lors de l\'authentification :', error);
+//     }
+// }
+
+// someFunction();
+
+
+
+// static Authentification(email) {
+//     return new Promise((resolve, reject) => {
+//         // Requête d'insertion
+//         const query = 'SELECT id_util FROM utilisateur WHERE email_util="' + email + '"';        
+        
+//         // Exécution de la requête
+//         connection.query(query, (err, results) => {
+//             if (err) {
+//                 console.error('Erreur lors de l\'exécution de la requête :', err);
+//                 reject(err);
+//                 return;
+//             }
+            
+//             if (results.length > 0) {
+//                 const userID = results[0].id_util;
+//                 console.log("Connexion OK");
+//                 resolve(userID);
+//             } else {
+//                 console.log("Not exist");
+//                 resolve(null); // Ou rejeter selon votre logique
+//             }
+//         });
+//     });
+// }
 
 
 

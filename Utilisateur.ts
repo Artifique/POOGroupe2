@@ -1,4 +1,5 @@
 // import { connect } from './connect.ts';
+// import { promises } from 'dns';
 import * as mysql from 'mysql';
 
 // Configuration de la connexion à la base de données MySQL
@@ -27,6 +28,7 @@ export class Utilisateur{
     public email_util:string;
     public num_util: number;
     public mdp_util: string;
+    // public id : number;
     constructor(nom_u:string,email_u:string,num_u:number,mdp_u:string){
             this.nom_util=nom_u;
             this.email_util=email_u;
@@ -51,81 +53,91 @@ export class Utilisateur{
 
     }
     
-    static ID = 0;
-
-    // static Authentification(email:string){
+    
+    
+    static Authentification(email:string):any {
+      // var ID :number = 0;
+        // Requête d'insertion
+        const query='(SELECT id_util FROM utilisateur WHERE email_util="'+email+'")';        
+        // Exécution de la requête d'insertion
+        var id = connection.query(query,  (err, results) => {
+            if (err) {
+                console.error('Erreur lors de l\'insertion de l\'événement :', err);
+            }else{
+              console.log("Connexion OK");
+              results[0].id_util;
+              // set _Id(ID);
+              // console.log(Id_UTIL);  
+              // resolve(ID);
+            }
+          })
         
+      }
+
+    // static Authentification(email:string):any {
+    //   // var ID :number = 0;
     //     // Requête d'insertion
     //     const query='(SELECT id_util FROM utilisateur WHERE email_util="'+email+'")';        
     //     // Exécution de la requête d'insertion
-    //     connection.query(query, (err, results) => {
+    //     return new Promise((resolve, reject) => {
+    //     var id = connection.query(query, (err, results):Promise<number> => {
     //         if (err) {
     //             console.error('Erreur lors de l\'insertion de l\'événement :', err);
-    //             return;
-    //         }
-    //         this.ID = results[0].id_util;
-    //         if(results.length >0){
-              
-    //           // console.log(results);
-    //           // this.ID = results[0].id_util;
+    //         }else{
     //           console.log("Connexion OK");
-    //           return this.ID ;
-    //           // if (results = []){
-    //           //   console.log("Not exist");
-    //           //   // console.log(err);
-    //           // }
+    //           var ID = results[0].id_util
+    //           // set _Id(ID);
+    //           // console.log(Id_UTIL);  
+    //           // resolve(ID);
     //         }
-    //         if(results=[]){
-    //           console.log("Not exist");
-    //         }
-             
+    //         resolve(ID);
+    //         return ID;
     //     });
-    //     return this.ID
-    // }
+    //     });
 
+    //     var Util = id;
+    //     return Util;
+    //   }
+    
     // static ID = 0;
 
-static Authentification(email: string): Promise<number> {
-    return new Promise((resolve, reject) => {
-        // Requête d'insertion
-        const query = '(SELECT id_util FROM utilisateur WHERE email_util="' + email + '")';
+// static Authentification(email: string): Promise<number> {
+//     return new Promise((resolve, reject) => {
+//         // Requête d'insertion
+//         const query = '(SELECT id_util FROM utilisateur WHERE email_util="' + email + '")';
         
-        // Exécution de la requête d'insertion
-        connection.query(query, (err, results) => {
-            if (err) {
-                console.error('Erreur lors de l\'insertion de l\'événement :', err);
-                reject(err);
-                return;
-            }
+//         // Exécution de la requête d'insertion
+//         connection.query(query, (err, results) => {
+//             if (err) {
+//                 console.error('Erreur lors de l\'insertion de l\'événement :', err);
+//                 reject(err);
+//                 return;
+//             }
 
-            if (results.length > 0) {
-                this.ID = results[0].id_util;
-                console.log("Connexion OK");
-                resolve(this.ID);
-            } else {
-                console.log("Not exist");
-                // resolve(null); // ou reject(new Error('Utilisateur non trouvé')) selon votre logique
-            }
-        });
-    });
-}
+//             if (results.length > 0) {
+//                 this.ID = results[0].id_util;
+//                 console.log("Connexion OK");
+//                 resolve(this.ID);
+//             } else {
+//                 console.log("Not exist");
+//                 // resolve(null); // ou reject(new Error('Utilisateur non trouvé')) selon votre logique
+//             }
+//         });
+//     });
+// }
 
 
     
     //  INSCRIPTION A UN EVENEMENT
 
-    static reservation(titre:string,methode_paie:string):any{
-      // const id = await Utilisateur.Authentification('example@example.com');
-      if (this.ID < 1 ) {
-          console.log("Connecter vous")
-      }else{
-        console.log(this.ID);
+    static reservation(titre:string,methode_paie:string, id: any):any{
+      
         const query='(SELECT id_event FROM evenement WHERE titre="'+titre+'")';
 
       // const query1='(SELECT id_util FROM utilisateur WHERE email_util="'+this.email_util+'")';
-      const query2='INSERT into reservation (id_util,id_event,date_res,methode_paie) VALUES ('+this.ID+','+query+',?,?)';
+      const query2='INSERT into reservation (id_util,id_event,date_res,methode_paie) VALUES (?,'+query+',?,?)';
 
-      connection.query(query2, [new Date(),methode_paie], (err) => {
+      connection.query(query2, [id,new Date(),methode_paie], (err) => {
        if (err) {
            console.error('Erreur lors de la reservation de l\'id utilisateur :', err);
            return;
@@ -134,7 +146,7 @@ static Authentification(email: string): Promise<number> {
            return;
         }
       });
-      }
+      
 
       
            
@@ -142,8 +154,8 @@ static Authentification(email: string): Promise<number> {
 
    }
 
-    public RechercherEvent():any{
-       const query='SELECT titre FROM evenement';
+    static RechercherEvent():any{
+       const query='SELECT evenement.titre, evenement.description, avoir_lieu.date FROM evenement, avoir_lieu where evenement.id_event = evenement.id_event and avoir_lieu.id_event = evenement.id_event';
        connection.query(query, (err, results) => {
         if (err) {
             console.error('Erreur lors de la recherche de l\'événement :', err);
