@@ -51,14 +51,79 @@ export class Utilisateur{
 
     }
     
+    static ID = 0;
+
+    // static Authentification(email:string){
+        
+    //     // Requête d'insertion
+    //     const query='(SELECT id_util FROM utilisateur WHERE email_util="'+email+'")';        
+    //     // Exécution de la requête d'insertion
+    //     connection.query(query, (err, results) => {
+    //         if (err) {
+    //             console.error('Erreur lors de l\'insertion de l\'événement :', err);
+    //             return;
+    //         }
+    //         this.ID = results[0].id_util;
+    //         if(results.length >0){
+              
+    //           // console.log(results);
+    //           // this.ID = results[0].id_util;
+    //           console.log("Connexion OK");
+    //           return this.ID ;
+    //           // if (results = []){
+    //           //   console.log("Not exist");
+    //           //   // console.log(err);
+    //           // }
+    //         }
+    //         if(results=[]){
+    //           console.log("Not exist");
+    //         }
+             
+    //     });
+    //     return this.ID
+    // }
+
+    // static ID = 0;
+
+static Authentification(email: string): Promise<number> {
+    return new Promise((resolve, reject) => {
+        // Requête d'insertion
+        const query = '(SELECT id_util FROM utilisateur WHERE email_util="' + email + '")';
+        
+        // Exécution de la requête d'insertion
+        connection.query(query, (err, results) => {
+            if (err) {
+                console.error('Erreur lors de l\'insertion de l\'événement :', err);
+                reject(err);
+                return;
+            }
+
+            if (results.length > 0) {
+                this.ID = results[0].id_util;
+                console.log("Connexion OK");
+                resolve(this.ID);
+            } else {
+                console.log("Not exist");
+                // resolve(null); // ou reject(new Error('Utilisateur non trouvé')) selon votre logique
+            }
+        });
+    });
+}
+
+
+    
     //  INSCRIPTION A UN EVENEMENT
 
-    public reservation(titre:string,methode_paie:string):any{
+    static reservation(titre:string,methode_paie:string):any{
+      // const id = await Utilisateur.Authentification('example@example.com');
+      if (this.ID < 1 ) {
+          console.log("Connecter vous")
+      }else{
+        console.log(this.ID);
+        const query='(SELECT id_event FROM evenement WHERE titre="'+titre+'")';
 
-      const query='(SELECT id_event FROM evenement WHERE titre="'+titre+'")';
-
-      const query1='(SELECT id_util FROM utilisateur WHERE email_util="'+this.email_util+'")';
-      const query2='INSERT into reservation (id_util,id_event,date_res,methode_paie) VALUES ('+query1+','+query+',?,?)';
+      // const query1='(SELECT id_util FROM utilisateur WHERE email_util="'+this.email_util+'")';
+      const query2='INSERT into reservation (id_util,id_event,date_res,methode_paie) VALUES ('+this.ID+','+query+',?,?)';
 
       connection.query(query2, [new Date(),methode_paie], (err) => {
        if (err) {
@@ -68,8 +133,12 @@ export class Utilisateur{
         console.log('Reservation OK');
            return;
         }
+      });
+      }
+
+      
            
-   });
+   
 
    }
 
